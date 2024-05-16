@@ -2,7 +2,7 @@
 
 First I want to mention that I used this paper as a refernce to understand some details and possible ways to go with.
 
-!(https://arxiv.org/abs/2207.09356)
+(https://arxiv.org/abs/2207.09356)
 
 # 2.Estimate the complexity of the move search in different stages of the game
 
@@ -32,7 +32,7 @@ The complexity in the end game is much lower, possibly O(1) if the guesser is co
 # Task 2
 
 ### 1. Initializing the Superposition State
-
+I fixed the number of colors as 2 (0, 1) and the number of pins as 4. ( as diccussed in classroom)
 For 4 positions and 2 colors (0 and 1), we can use Hadamard gates to create a superposition of all possible guesses. Each position can be represented by one qubit.
 
 The initial state of the guess register |g> can be created by applying the Hadamard gate (H) to each qubit:
@@ -47,13 +47,13 @@ This results in the superposition:
 The secret sequence |s> is fixed and encoded in the circuit. For simplicity, let's assume the secret sequence is |s> = |s1s2s2s4>, where each |si> is a qubit.
 
 ### 3. Applying the Quantum Feedback Function
-We need a unitary operator U(f) Unitary that computes the feedback based on the guess and the secret sequence and stores it in ancillary qubits.
+We need a unitary operator U(f) that computes the feedback based on the guess and the secret sequence and stores it in ancillary qubits.
 
 1. **Initialization of Feedback Register**:
    The feedback register is initialized to |0>
 
 2. **Quantum Feedback Calculation**:
-   We use CNOT gates to compare each guess qubit with the corresponding secret qubit and Toffoli gates to update the feedback register.
+   We use CNOT gates to compare each guess qubit with the corresponding secret qubit and Toffoli gates (taken from paper :) )  to update the feedback register.
 
 ### 4. Oracle Marking and Amplification
 
@@ -64,7 +64,7 @@ Grover's algorithm is used to amplify the probability amplitude of the correct g
 
 ### Full Quantum Circuit Example
 
-Let's design the quantum circuit for the specific case with 4 pins and 2 colors (0 and 1).
+Now I will design full quantum circuit for the specific case with 4 pins and 2 colors (0 and 1).
 
 #### Step 1: Initialize Superposition
 
@@ -85,7 +85,7 @@ Assume the secret sequence is |s> = |1010> This is fixed and encoded in the circ
 
 #### Step 3: Quantum Feedback Function U(f)
 
-The feedback function compares the guess with the secret and updates the feedback register. We'll use controlled operations to do this.
+The feedback function compares the guess with the secret and updates the feedback register. I willl use controlled operations to do this.
 
 Circuit:
 
@@ -127,4 +127,4 @@ Circuit:
 
 ### Conclusion
 
-By following these steps, we can parallelize the move search in Mastermind using a quantum circuit. The circuit initializes the guess register in a superposition state, applies the feedback function using controlled operations, and uses Grover's algorithm to amplify the correct guesses. This approach leverages quantum parallelism to evaluate multiple guesses simultaneously, providing a significant speedup over classical methods.
+By following these steps, we can parallelize the move search in Mastermind using a quantum circuit. The circuit initializes the guess register in a superposition state, applies the feedback function using controlled operations, and uses Grover's algorithm to amplify the correct guesses.
