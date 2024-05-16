@@ -170,3 +170,121 @@ In this example:
 
 ### Conclusion
 This quantum circuit approach can be generalized for larger values of \(n\) and \(k\). For non-binary cases, use more qubits to represent each color and adapt the gates accordingly. The key operations involve initializing superpositions, applying feedback functions using controlled gates, and measuring the feedback register to guide subsequent guesses.
+
+
+
+
+
+To parallelize the move search in Mastermind using quantum gates applied to superposition states, we need to leverage the principles of quantum parallelism and interference. The goal is to create a quantum circuit that can evaluate multiple possible guesses simultaneously, update based on feedback, and use quantum interference to amplify the correct sequence.
+
+### Quantum Parallelism in Mastermind
+
+1. **Superposition Initialization**:
+   - We initialize the guess register to a superposition of all possible guesses.
+   - For \(n\) positions and \(k\) colors, each position can be in one of \(k\) states. Hence, we need \(\log_2(k)\) qubits per position.
+   - The initial state for \(n\) positions can be represented as:
+     \[
+     |\psi_g\rangle = \frac{1}{\sqrt{k^n}} \sum_{g \in [k]^n} |g\rangle
+     \]
+   - Using Hadamard gates for \(k = 2\) or generalized Hadamard-like gates for larger \(k\), we initialize the guess register to this superposition.
+
+2. **Secret Sequence Representation**:
+   - The secret sequence \(|s\rangle\) is a fixed state chosen by the keeper and encoded in the circuit.
+
+3. **Feedback Calculation**:
+   - We need to design a quantum oracle that computes the feedback for each guess in parallel.
+   - The feedback will be stored in ancillary qubits.
+
+### Quantum Circuit Design
+
+#### Step 1: Initialize Superposition
+
+Initialize the guess register to a superposition of all possible guesses.
+
+For \(k = 2\):
+\[
+|\psi_g\rangle = H^{\otimes n} |0\rangle^{\otimes n}
+\]
+where \(H\) is the Hadamard gate.
+
+For larger \(k\):
+\[
+|\psi_g\rangle = \frac{1}{\sqrt{k^n}} \sum_{g \in [k]^n} |g\rangle
+\]
+
+#### Step 2: Apply the Quantum Feedback Function
+
+Implement a unitary operator \(U_f\) that encodes the feedback into ancillary qubits based on the secret sequence and the guess.
+
+For each guess \(g\) and secret \(s\), \(U_f\) computes the feedback \(f(s,g)\):
+\[
+U_f(|s\rangle \otimes |g\rangle \otimes |0\rangle_f) = |s\rangle \otimes |g\rangle \otimes |f(s,g)\rangle
+\]
+
+This requires controlled operations and Toffoli gates to count the correct positions.
+
+#### Step 3: Interference and Amplification
+
+Use Grover's algorithm or a similar quantum search algorithm to amplify the correct guess.
+
+1. **Oracle Marking**: Mark the states with maximum feedback (i.e., where \(f(s,g) = n\)):
+   \[
+   O_f |g\rangle = 
+   \begin{cases} 
+   -|g\rangle & \text{if } f(s,g) = n \\
+   |g\rangle & \text{otherwise}
+   \end{cases}
+   \]
+
+2. **Diffusion Operator**: Apply the diffusion operator to amplify the marked states:
+   \[
+   D = 2|\psi_g\rangle \langle \psi_g| - I
+   \]
+
+### Complete Quantum Circuit Example
+
+Here’s a simplified example for \(k=2\) (binary colors) and \(n=2\) positions:
+
+1. **Initialization**:
+   - Guess register: \( |g\rangle = H^{\otimes 2} |00\rangle \)
+   - Feedback register: \( |f\rangle = |00\rangle \)
+
+2. **Quantum Feedback Function \(U_f\)**:
+   - Controlled operations and Toffoli gates to compute \(f(s,g)\).
+
+3. **Oracle Marking \(O_f\)**:
+   - Mark the states where \(f(s,g) = 2\).
+
+4. **Diffusion Operator \(D\)**:
+   - Apply the diffusion operator to amplify the correct guesses.
+
+```plaintext
+|s1> --•-----•--| H |--------------------| U_f |--| O_f |--| D |
+       |     |   |   |                    |     |        |
+|g1> --X--•  |---| H |--------------------|     |--------|
+         |  |   |   |                    |     |        |
+|s2> --•--X--•--| H |--------------------|     |--------|
+       |     |   |   |                    |     |        |
+|g2> --X-----X--| H |--------------------|     |--------|
+       |     |                                   |
+|0> ---| CCNOT |--| CCNOT |--| CCNOT |---| U_f |--| O_f |--| D |
+```
+
+### Steps Explained:
+
+1. **Initialization**:
+   - Apply Hadamard gates to the guess qubits to create a superposition.
+   - Initialize feedback qubits to \(|0\rangle\).
+
+2. **Feedback Calculation**:
+   - Use controlled operations (CNOT and Toffoli gates) to compare each guess qubit with the corresponding secret qubit and update the feedback qubits accordingly.
+
+3. **Oracle Marking**:
+   - Apply a phase flip (oracle marking) to the states where the feedback register indicates all correct positions (i.e., \(f(s,g) = 2\)).
+
+4. **Diffusion Operator**:
+   - Apply the diffusion operator to amplify the probability amplitude of the correct guess states.
+
+### Conclusion
+
+By applying these quantum gates to the superposition states, we parallelize the move search, allowing the quantum algorithm to evaluate multiple guesses simultaneously and leverage quantum interference to find the correct sequence efficiently. This approach demonstrates the power of quantum computing in solving combinatorial problems like Mastermind.
