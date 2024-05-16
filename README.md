@@ -1,15 +1,17 @@
 # mm-q
 
-To describe the Mastermind game using a system of qubits and define the game states and state vectors, we need to represent the sequence of colored pins, the guesses, and the feedback within the quantum framework.
+First I want to mention that I used this paper as a refernce to understand some details and possible ways to go with.
+
+!(https://arxiv.org/abs/2207.09356)
 
 # 2.Estimate the complexity of the move search in different stages of the game
 
-To estimate the complexity, I will split it  into steps.
+To estimate the complexity..
 Fisrt guesser says an option, it take contant time to calculate the score for the keeper.
 Then the guesser uses this score to caluclate the scores for all 2^4 = 16 numbers.
 Since in future steps the number of remaining candidates is going to decrease we don't need the complexity of the rest operations, we will take the highest order. => 2^4, or in general case it is 2^n.
 
-If we calculate for general case n
+If we calculate for general case n for all intermediate stages as well
 
 In First Stage
 
