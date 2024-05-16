@@ -29,7 +29,6 @@ As the game progresses and more feedback is accumulated, the guesser has signifi
 In the final stages, the number of possible sequences is very small, and the guesser is almost certain of the positions and colors.
 The complexity in the end game is much lower, possibly O(1) if the guesser is confident of the correct sequence, making only one final guess to confirm.
 
-# Task 2
 
 ### 1. Initializing the Superposition State
 I fixed the number of colors as 2 (0, 1) and the number of pins as 4. ( as diccussed in classroom)
