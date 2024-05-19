@@ -28,8 +28,3 @@ Int the Final Stage
 As the game progresses and more feedback is accumulated, the guesser has significantly narrowed down the possible sequences.
 In the final stages, the number of possible sequences is very small, and the guesser is almost certain of the positions and colors.
 The complexity in the end game is much lower, possibly O(1) if the guesser is confident of the correct sequence, making only one final guess to confirm.
-```
-
-### Conclusion
-
-By following these steps, we can parallelize the move search in Mastermind using a quantum circuit. The circuit initializes the guess register in a superposition state, applies the feedback function using controlled operations, and uses Grover's algorithm to amplify the correct guesses.
